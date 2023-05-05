@@ -2,17 +2,20 @@
 
 This repository is about interacting with `langchain` LLM via Slack.
 
+[Official `langchain` Repository](https://github.com/hwchase17/langchain)
+
+
 # Setup Slack
 
-An simple example is `bot.py` file.
+An simple example is `/examples/bot.py` file.
 
 There are several steps to implement.
 
-1. Setup Slack: 
+1. Setup Slack at https://api.slack.com/ by following below instruction: 
    
    https://www.pragnakalp.com/create-slack-bot-using-python-tutorial-with-examples/
 
-2. Setup `ngrok` and expose localhost to Slack
+2. Setup `ngrok` on a computer and register at https://ngrok.com/. Then, expose localhost to Slack by using a simple command below:
 
         ngrok http http://127.0.0.1:5000
 
@@ -21,7 +24,7 @@ There are several steps to implement.
 
 # Integrate Langchain
 
-1. After setup Slack, you can follow a below instruction for your first bot. An simple example is `bot_with_langchain.py` file.
+1. After setup Slack, you can follow a below instruction for your first bot. An simple example is `examples/bot_with_langchain/`.
 
     https://www.mikulskibartosz.name/ai-data-analyst-bot-for-slack-with-gpt-and-langchain/
 

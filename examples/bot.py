@@ -18,8 +18,9 @@ if ENV_NAME is None:
 app = Flask(__name__)
 slack_event_adapter = SlackEventAdapter(SLACK_SIGNING_SECRET, '/slack/events', app)
 
-client = slack.WebClient(token = SLACK_TOKEN)
+client = slack.WebClient(token=SLACK_TOKEN)
 client.chat_postMessage(channel="#learning-langchain", text="Hello human")
+
 
 @ slack_event_adapter.on('message')
 def message(payload):
@@ -28,10 +29,10 @@ def message(payload):
     channel_id = event.get('channel')
     user_id = event.get('user')
     text = event.get('text')
- 
+
     if text == "hi":
         client.chat_postMessage(channel=channel_id,text="Hello")
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug=True)

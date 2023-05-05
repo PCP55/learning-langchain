@@ -40,7 +40,8 @@ def handle_message():
         print(f'Handling message {message_id} with text {text}')
         text = " ".join(text.split(" ", 1)[1:])
         try:
-            response = ai.run(text)
+            # response = ai.run(text)
+            response = "AI sleeps already"
             reply_to_slack(thread_ts, response)
         except Exception as e:
             response = f":exclamation::exclamation::exclamation: Error: {e}"
@@ -77,7 +78,7 @@ def message(payload):
 
 
 ai = AI(sql_query)
-messages_to_handle = Queue(maxsize=3)
+messages_to_handle = Queue(maxsize=32)
 client = slack.WebClient(token=SLACK_TOKEN)
 
 
