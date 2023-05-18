@@ -2,7 +2,7 @@ import pandas as pd
 import sqlite3
 
 
-DATABASE_PATH = "./data/merchanaries.db"
+DATABASE_PATH = "./data/sales_by_area.db"
 
 
 conn = sqlite3.connect(DATABASE_PATH)

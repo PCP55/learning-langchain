@@ -1,4 +1,4 @@
-from agents.query_agent import AI, sql_query
+from agents.agent import AI, sql_query
 
 import os
 from threading import Thread
