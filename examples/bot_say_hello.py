@@ -1,3 +1,5 @@
+# This example is just a example of how to get message and response to Slack.
+
 import os
 
 from dotenv import load_dotenv
