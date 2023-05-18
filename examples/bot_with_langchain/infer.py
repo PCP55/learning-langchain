@@ -40,8 +40,8 @@ def handle_message():
         print(f'Handling message {message_id} with text {text}')
         text = " ".join(text.split(" ", 1)[1:])
         try:
-            # response = ai.run(text)
-            response = "AI sleeps already"
+            response = ai.run(text)
+            # response = "AI sleeps already"
             reply_to_slack(thread_ts, response)
         except Exception as e:
             response = f":exclamation::exclamation::exclamation: Error: {e}"
@@ -83,5 +83,11 @@ client = slack.WebClient(token=SLACK_TOKEN)
 
 
 if __name__ == "__main__":
+    # import sqlite3
+    # import pandas as pd
+    # DATABASE_PATH = "examples/bot_with_langchain/data/titanic.db"
+    # con = sqlite3.connect(DATABASE_PATH)
+    # response = pd.read_sql_query("SELECT * FROM survivors LIMIT 1", con)
+    # print(response)
     Thread(target=handle_message, daemon=True).start()
     app.run(debug=True)

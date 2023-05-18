@@ -17,26 +17,73 @@ HUGGINGFACE_HUB_API_KEY = os.getenv("HUGGINGFACE_HUB_API_KEY")
 if ENV_NAME is None:
     raise "Cannot load .env file properly"
 
-DATABASE_PATH = "../data/titanic.db"
+DATABASE_PATH = "examples/bot_with_langchain/data/merchanaries.db"
+
+# PROMPT_TEMPLATE = """
+# You have access to the following SQL tables that describe the passengers of the Titanic:
+# Table 1: survivors with columns: PassengerId and Survived. The survived column indicates whether a person has survived the Titanic disaster. 0 if not, 1 if yes.
+# Table 2: tickets with columns: PassengerId, Ticket - ticket id, Pclass - passenger class (1, 2, or 3), Fare - passenger fare, Cabin - cabin number, Embarked - the port of embarkation (C = Cherbourg, Q = Queenstown, S = Southampton)
+# Table 3: passengers with columns: PassengerId, Name, Sex (words "male" or "female"), Age, SibSp - the number of siblings/spouses aboard the Titanic, Parch - the number of parents/children aboard the Titanic
+
+# When you are asked to retrieve data, return a SQL query using the provided tables.
+# ###
+# {query}
+# """
 
 PROMPT_TEMPLATE = """
-You have access to the following SQL tables that describe the passengers of the Titanic:
-Table 1: survivors with columns: PassengerId and Survived. The survived column indicates whether a person has survived the Titanic disaster. 0 if not, 1 if yes.
-Table 2: tickets with columns: PassengerId, Ticket - ticket id, Pclass - passenger class (1, 2, or 3), Fare - passenger fare, Cabin - cabin number, Embarked - the port of embarkation (C = Cherbourg, Q = Queenstown, S = Southampton)
-Table 3: passengers with columns: PassengerId, Name, Sex (words "male" or "female"), Age, SibSp - the number of siblings/spouses aboard the Titanic, Parch - the number of parents/children aboard the Titanic
 
-When you are asked to retrieve data, return a SQL query using the provided tables.
+You have access to the following SQL tables that describe the data about restaurants sales in food delivery industry by areas and menus:
+Table 1: sales_by_area with below columns: 
+- area: indicates sales location
+- number_of_restaurant_supply: indicates the number of restaurants selling item.
+- item: indicates the item's name
+- number_of_orders_demand: indicates the number of orders that occurs in each areas.
+- ratio_demand_supply: indicates the ratio of demand divided by supply which calculated from number_of_orders_demand per number_of_restaurant_supply.
+
+When you are asked to retrieve data, return a SQL query using the provided tables
+Please stick to only tables and columns as defined above.
+You will be asked by a merchant. You are a key accountant in food delivery company to give advice to those merchant. Please answer politely and professionally and with reason in every answer.
+
 ###
 {query}
 """
 
 
+# PROMPT_TEMPLATE = """
+# You have access to the following SQL tables that describe the data about restaurants sales in food delivery industry by areas and menus:
+# Table 1: sales_by_area with below columns: 
+# - area: indicates sales location
+# - number_of_restaurant_supply: indicates the number of restaurants selling item.
+# - item: indicates the item's name
+# - number_of_orders_demand: indicates the number of orders that occurs in each areas.
+# - ratio_demand_supply: indicates the ratio of demand divided by supply which calculated from number_of_orders_demand per number_of_restaurant_supply. Higher value means that it is a good location for selling this items.
+
+# When you are asked to retrieve data, return a SQL query using the provided tables.
+# ###
+# {query}
+# """
+# Please stick to only tables and columns as defined above. If data is not provided in the defined table or the result of query is 0 row, you should say You Don't know answer to the user.
+#
+# from transformers import AutoModelForCausalLM, pipeline
+# from langchain.llms import HuggingFacePipeline
+
+# model_path = "../../../llama-7b-hf"
+# model = AutoModelForCausalLM.from_pretrained(model_path)
+# #max_length has typically been deprecated for max_new_tokens 
+# pipe = pipeline(
+#     "text-generation", model=model, max_new_tokens=64, model_kwargs={"temperature":0}
+# )
+# hf = HuggingFacePipeline(pipeline=pipe)
+
+
 class AI:
     def __init__(self, sql_query):
-        # self.llm = HuggingFaceHub(repo_id="google/flan-t5-xl", huggingfacehub_api_token=HUGGINGFACE_HUB_API_KEY)
-        self.llm = HuggingFaceHub(repo_id="pythainlp/wangchanglm-7.5B-sft-enth-sharded", huggingfacehub_api_token=HUGGINGFACE_HUB_API_KEY)
+        # self.llm = HuggingFaceHub(repo_id="google/flan-t5-xl", huggingfacehub_api_token=HUGGINGFACE_HUB_API_KEY, model_kwargs={"temperature":0, "max_length":64})
+        # self.llm = HuggingFaceHub(repo_id="pythainlp/wangchanglm-7.5B-sft-enth-sharded", huggingfacehub_api_token=HUGGINGFACE_HUB_API_KEY)
         # self.llm = HuggingFaceHub(repo_id="gpt2", huggingfacehub_api_token=HUGGINGFACE_HUB_API_KEY)
-        # self.llm = OpenAI(model_name="text-davinci-003", temperature=0.9, openai_api_key=OPEN_AI_API_KEY)
+        self.llm = OpenAI(model_name="text-davinci-003", temperature=0.5, openai_api_key=OPEN_AI_API_KEY)
+        # self.llm = OpenAI(model_name="ada", temperature=0.9, openai_api_key=OPEN_AI_API_KEY)
+        # self.llm = 'test'
         self.prompt = PromptTemplate(
             input_variables=["query"],
             template=PROMPT_TEMPLATE,
@@ -53,7 +100,7 @@ class AI:
             self.llm,
             agent="zero-shot-react-description",
             verbose=True,
-            max_iterations=2,
+            max_iterations=5,
         )
 
     def run(self, query):

@@ -1,0 +1,10 @@
+area,number_of_restaurant_supply,item,number_of_orders_demand,ratio_demand_supply
+Bangkok,10,ข้าวมันไก่,10,1
+Bangkok,5,หมูตุ๋น,20,4
+Bangkok,8,ข้าวขาหมู,30,3.75
+Samutprakarn,20,ข้าวมันไก่,20,1
+Samutprakarn,2,หมูตุ๋น,80,40
+Samutprakarn,4,ข้าวขาหมู,40,10
+Chaingmai,10,ข้าวมันไก่,30,3
+Chaingmai,1,หมูตุ๋น,50,50
+Chaingmai,5,ข้าวขาหมู,35,7
