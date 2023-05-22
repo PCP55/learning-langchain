@@ -20,7 +20,7 @@ if ENV_NAME is None:
     raise "Cannot load .env file properly"
 
 
-DATABASE_PATH, PROMPT_TEMPLATE = get_prompt_agent_config(topic_name = "introduction")
+DATABASE_PATH, PROMPT_TEMPLATE = get_prompt_agent_config(topic_name = "example")
 
 
 class AI:

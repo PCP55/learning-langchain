@@ -9,3 +9,5 @@ prompt: |
   
   ###
   {query}
+
+  Then please suggest the useful questions to get more insight from the provided tables.
